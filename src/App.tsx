@@ -1,26 +1,39 @@
 import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
-import ToDoList from "./components/ToDoList";
-
-const Body = styled.body`
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: ${(prop) => prop.theme.bgColor};
-`;
-
-const GlobalStyle = createGlobalStyle`
-margin: 0;
-padding: 0;
-`;
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function App() {
+  const onDragEnd = () => {};
   return (
-    <Body>
-      <GlobalStyle />
-      <ToDoList />
-    </Body>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="one">
+        {(magic) => (
+          <ul ref={magic.innerRef} {...magic.droppableProps}>
+            <Draggable draggableId="first" index={0}>
+              {(magic) => (
+                <li
+                  ref={magic.innerRef}
+                  {...magic.dragHandleProps}
+                  {...magic.draggableProps}
+                >
+                  one
+                </li>
+              )}
+            </Draggable>
+            <Draggable draggableId="second" index={1}>
+              {(magic) => (
+                <li
+                  ref={magic.innerRef}
+                  {...magic.dragHandleProps}
+                  {...magic.draggableProps}
+                >
+                  two
+                </li>
+              )}
+            </Draggable>
+          </ul>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 }
 
