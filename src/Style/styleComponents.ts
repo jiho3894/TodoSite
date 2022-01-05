@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+/* App.tsx*/ 
 export const Container = styled.div`
   display: flex;
   max-width: 800px;
@@ -18,6 +19,8 @@ export const Boards = styled.div`
   gap: 10px;
 `;
 
+/* DraggableCard.tsx */
+
 export const Card = styled.div<{ isDragging: boolean }>`
   border-radius: 5px;
   margin-bottom: 5px;
@@ -26,4 +29,53 @@ export const Card = styled.div<{ isDragging: boolean }>`
     props.isDragging ? "#e4f2ff" : props.theme.cardColor};
   box-shadow: ${(props) =>
     props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
+`;
+
+/* Board.tsx */
+
+export const Wrapper = styled.div`
+  width: 300px;
+  padding-top: 10px;
+  background-color: ${(props) => props.theme.boardColor};
+  border-radius: 5px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
+export const Title = styled.h2`
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 18px;
+`;
+
+export const Form = styled.form`
+  width: 100%;
+  input {
+    width: 100%;
+  }
+`;
+
+/* DeleteCard.tsx*/
+
+export const TrashBox = styled.section`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.2s ease-in;
+  &:hover {
+    transform: scale(1.3);
+    svg {
+      color: red;
+    }
+  }
+`;
+
+export const Trash = styled.div`
+  width: 50px;
+  height: 100px;
 `;

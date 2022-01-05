@@ -1,15 +1,28 @@
-import React from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
-import { toDoState } from "./atom";
+import { toDoState } from "./model/atom";
 import Board from "./Components/Board";
 import { Boards, Container } from "./Style/styleComponents";
+import AddBoard from "./Components/AddBoard";
+import DeleteCard from "./Components/DeleteCard";
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = (info: DropResult) => {
     const { destination, source } = info;
+    console.log(info);
     if (!destination) return;
+    if (destination.droppableId === "trash-card") {
+      setToDos((allBoards) => {
+        const delCard = [...allBoards[source.droppableId]];
+        delCard.splice(source.index, 1);
+        return {
+          ...allBoards,
+          [source.droppableId]: delCard,
+        };
+      });
+      return;
+    }
     if (destination?.droppableId === source.droppableId) {
       setToDos((allBoards) => {
         const copy = [...allBoards[source.droppableId]];
@@ -38,15 +51,19 @@ function App() {
     }
   };
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Container>
-        <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board toDos={toDos[boardId]} boardId={boardId} key={boardId} />
-          ))}
-        </Boards>
-      </Container>
-    </DragDropContext>
+    <>
+      <AddBoard />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Container>
+          <Boards>
+            {Object.keys(toDos).map((boardId) => (
+              <Board toDos={toDos[boardId]} boardId={boardId} key={boardId} />
+            ))}
+          </Boards>
+        </Container>
+        <DeleteCard />
+      </DragDropContext>
+    </>
   );
 }
 

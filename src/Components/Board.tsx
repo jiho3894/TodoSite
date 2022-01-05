@@ -1,32 +1,11 @@
+import { useEffect } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { ITodo, toDoState } from "../atom";
-import DraggableCard from "./DraggableCard";
-
-interface IAreaProps {
-  isDraggingFromThis: boolean;
-  isDraggingOver: boolean;
-}
-
-export const Wrapper = styled.div`
-  width: 300px;
-  padding-top: 10px;
-  background-color: ${(props) => props.theme.boardColor};
-  border-radius: 5px;
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  font-weight: 600;
-  margin-bottom: 10px;
-  font-size: 18px;
-`;
+import { ITodo, saveTodos, toDoState } from "../model/atom";
+import { Form, Title, Wrapper } from "../Style/styleComponents";
+import DraggableCard from "./Card";
 
 const Area = styled.div<IAreaProps>`
   flex-grow: 1;
@@ -40,13 +19,6 @@ const Area = styled.div<IAreaProps>`
   padding: 20px;
 `;
 
-const Form = styled.form`
-  width: 100%;
-  input {
-    width: 100%;
-  }
-`;
-
 interface IBoard {
   toDos: ITodo[];
   boardId: string;
@@ -56,10 +28,15 @@ interface IForm {
   toDo: string;
 }
 
+interface IAreaProps {
+  isDraggingFromThis: boolean;
+  isDraggingOver: boolean;
+}
+
 const Board = ({ toDos, boardId }: IBoard) => {
-  const setToDos = useSetRecoilState(toDoState);
+  const [localState, setToDos] = useRecoilState(toDoState);
   const { register, handleSubmit, setValue } = useForm<IForm>();
-  const onValid = ({ toDo }: IForm) => {
+  const onVaild = ({ toDo }: IForm) => {
     const newToDo = {
       id: Date.now(),
       text: toDo,
@@ -67,15 +44,26 @@ const Board = ({ toDos, boardId }: IBoard) => {
     setToDos((allBoards) => {
       return {
         ...allBoards,
-        [boardId]: [...allBoards[boardId], newToDo],
+        [boardId]: [newToDo, ...allBoards[boardId]],
       };
     });
     setValue("toDo", "");
   };
+  const handleDelete = () => {
+    setToDos((allBoards) => {
+      const boards = {...allBoards};
+      delete boards[boardId];
+      return { ...boards };
+    });
+  };
+  useEffect(() => {
+    saveTodos(localState);
+  }, [localState]);
   return (
     <Wrapper>
       <Title>{boardId}</Title>
-      <Form onSubmit={handleSubmit(onValid)}>
+      <div onClick={handleDelete}>delete</div>
+      <Form onSubmit={handleSubmit(onVaild)}>
         <input
           {...register("toDo", { required: true })}
           type="text"

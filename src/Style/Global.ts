@@ -1,25 +1,18 @@
 import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
-  * {
-    box-sizing: border-box;
-    margin:0;
-    border:0;
-  }
-  body {
-    font-family: 'Source Sans Pro', sans-serif;
-    background-color: ${(props) => props.theme.bgColor};
-    color: black;
-    
-  }
-
-  li {
-    list-style: none;
-  }
-
-  a{
-    text-decoration: none;
-    color: inherit;
-  }
-`;
+${reset}
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Oswald', sans-serif;
+  background-color:${(props) => props.theme.bgColor};
+  
+}
+a {
+  text-decoration:none;
+  color: inherit;
+}`;

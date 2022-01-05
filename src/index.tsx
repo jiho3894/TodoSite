@@ -4,7 +4,7 @@ import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
 import App from "./App";
 import { GlobalStyle } from "./Style/Global";
-import { darkTheme } from "./theme";
+import { darkTheme } from "./Style/theme";
 
 ReactDOM.render(
   <React.StrictMode>
