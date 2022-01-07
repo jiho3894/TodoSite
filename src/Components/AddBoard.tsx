@@ -1,7 +1,14 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
+import styled from "styled-components";
 import { saveTodos, toDoState } from "../model/atom";
+
+const Form = styled.form`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 interface IAddBoard {
   category: string;
@@ -24,12 +31,12 @@ const AddBoard = () => {
     saveTodos(toDos);
   }, [toDos]);
   return (
-    <form onSubmit={handleSubmit(onValid)}>
+    <Form onSubmit={handleSubmit(onValid)}>
       <input
         {...register("category", { required: true })}
         placeholder="add board"
       ></input>
-    </form>
+    </Form>
   );
 };
 export default AddBoard;
