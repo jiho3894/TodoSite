@@ -1,5 +1,6 @@
 # Getting Started with Create React App
 
+```javaScript
 const Svg = styled.svg`
   width: 500px;
   height: 500px;
@@ -38,4 +39,4 @@ const App = () => {
       </Svg>
     </Wrapper>
   );
-};
+};```
