@@ -2,9 +2,48 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import { toDoState } from "./model/atom";
 import Board from "./Components/Board";
-import { Boards, Container } from "./Style/styleComponents";
 import AddBoard from "./Components/AddBoard";
-import DeleteCard from "./Components/DeleteCard";
+import styled from "styled-components";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+
+export const Container = styled.div`
+  display: flex;
+  max-width: 800px;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  height: 800px;
+`;
+
+export const Boards = styled(motion.div)`
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+`;
+
+const box = {
+  invisible: (back: boolean) => ({
+    x: back ? -500 : 500,
+    opacity: 0,
+    scale: 0,
+  }),
+  visible: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+  exit: (back: boolean) => ({
+    x: back ? 500 : -500,
+    opacity: 0,
+    scale: 0,
+    transition: { duration: 0.5 },
+  }),
+};
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
@@ -50,18 +89,38 @@ function App() {
       });
     }
   };
+  const [visible, setVisible] = useState(1);
+  const [isBack, setIsBack] = useState(false);
+  const nextPlease = () => {
+    setIsBack(false);
+    setVisible((prev) => (prev === 10 ? 10 : prev + 1));
+  };
+  const prevPlease = () => {
+    setIsBack(true);
+    setVisible((prev) => (prev === 1 ? 1 : prev - 1));
+  };
   return (
     <>
       <AddBoard />
       <DragDropContext onDragEnd={onDragEnd}>
         <Container>
-          <Boards>
-            {Object.keys(toDos).map((boardId) => (
-              <Board toDos={toDos[boardId]} boardId={boardId} key={boardId} />
-            ))}
-          </Boards>
+          <AnimatePresence custom={isBack}>
+            <Boards
+              custom={isBack}
+              variants={box}
+              initial="invisible"
+              animate="visible"
+              exit="exit"
+              key={visible}
+            >
+              {Object.keys(toDos).map((boardId) => (
+                <Board toDos={toDos[boardId]} boardId={boardId} key={boardId} />
+              ))}
+            </Boards>
+          </AnimatePresence>
         </Container>
-        <DeleteCard />
+        <button onClick={prevPlease}>prev</button>
+        <button onClick={nextPlease}>next</button>
       </DragDropContext>
     </>
   );

@@ -6,11 +6,14 @@ export const GlobalStyle = createGlobalStyle`
 ${reset}
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 body {
   font-family: 'Oswald', sans-serif;
   background-color:${(props) => props.theme.bgColor};
-  
+  margin: 0;
+  padding: 0;
 }
 a {
   text-decoration:none;

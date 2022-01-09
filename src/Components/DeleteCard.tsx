@@ -1,7 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Droppable } from "react-beautiful-dnd";
-import { Trash, TrashBox } from "../Style/styleComponents";
+import styled from "styled-components";
+
+const TrashBox = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  transition: all 0.2s ease-in;
+  svg {
+    color: gold;
+  }
+  &:hover {
+    transform: scale(1.3);
+    svg {
+      color: red;
+    }
+  }
+`;
+
+const Trash = styled.div`
+  position: absolute;
+`;
 
 const DeleteCard = () => {
   return (
