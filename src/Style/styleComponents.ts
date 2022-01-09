@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 /* App.tsx*/ 
@@ -32,18 +33,6 @@ export const Card = styled.div<{ isDragging: boolean }>`
 `;
 
 /* Board.tsx */
-
-export const Wrapper = styled.div`
-  width: 300px;
-  padding-top: 10px;
-  background-color: ${(props) => props.theme.boardColor};
-  border-radius: 5px;
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-
 export const Title = styled.h2`
   text-align: center;
   font-weight: 600;
